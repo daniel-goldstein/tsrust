@@ -13,7 +13,7 @@ impl TreeSequence {
     }
 
     fn add_edge(&mut self, child: NodeId, parent: NodeId, left: u64, right: u64) {
-        let e = Edge::new(child, parent, left, right);
+        let e = Edge { child, parent, left, right };
         match self.edges.binary_search(&e) {
             Ok(pos) => self.edges.insert(pos, e),
             Err(pos) => self.edges.insert(pos, e),
@@ -57,7 +57,7 @@ impl TreeSequenceBuilder {
                 self.ts
                     .add_edge(child, old_parent, left, self.last_breakpoint);
             }
-            // Start a new edge for the child it is given to a new parent
+            // Start a new edge for the child if it has a new parent
             if let Some(new_parent) = new_parent {
                 self.curr_edges.push((c, new_parent, self.last_breakpoint));
             }
@@ -95,17 +95,6 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_tree_sequence_macro() {
-        let mut ts = TreeSequence::new();
-        ts.add_edge(1, 0, 0, 1);
-        ts.add_edge(2, 0, 0, 1);
-        assert_eq!(treeseq!(1 -> 0, 2 -> 0), ts);
-
-        let ts = TreeSequenceBuilder::new().insert(vec![1, 2], 0).end(1);
-        assert_eq!(treeseq!(1 -> 0, 2 -> 0), ts);
-    }
-
-    #[test]
     fn test_tree_sequence_builder() {
         let ts = TreeSequenceBuilder::new()
             .insert(vec![0, 1], 4)
@@ -135,5 +124,16 @@ mod test {
     #[test]
     fn test_tree_sequence_builder_empty() {
         assert_eq!(TreeSequence::new(), TreeSequenceBuilder::new().end(1));
+    }
+
+    #[test]
+    fn test_tree_sequence_macro() {
+        let mut ts = TreeSequence::new();
+        ts.add_edge(1, 0, 0, 1);
+        ts.add_edge(2, 0, 0, 1);
+        assert_eq!(treeseq!(1 -> 0, 2 -> 0), ts);
+
+        let ts = TreeSequenceBuilder::new().insert(vec![1, 2], 0).end(1);
+        assert_eq!(treeseq!(1 -> 0, 2 -> 0), ts);
     }
 }

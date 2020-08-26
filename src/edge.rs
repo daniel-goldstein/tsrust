@@ -3,10 +3,10 @@ use std::cmp::Ordering;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct Edge {
-    parent: NodeId,
-    child: NodeId,
-    left: u64,
-    right: u64,
+    pub parent: NodeId,
+    pub child: NodeId,
+    pub left: u64,
+    pub right: u64,
 }
 
 impl Ord for Edge {
@@ -18,16 +18,5 @@ impl Ord for Edge {
 impl PartialOrd for Edge {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
-    }
-}
-
-impl Edge {
-    pub fn new(parent: NodeId, child: NodeId, left: u64, right: u64) -> Edge {
-        Edge {
-            parent,
-            child,
-            left,
-            right,
-        }
     }
 }
