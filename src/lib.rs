@@ -1,4 +1,4 @@
 mod node;
 mod edge;
 mod tree;
-mod treeseq;
+pub mod treeseq;

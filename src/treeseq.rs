@@ -28,7 +28,7 @@ pub struct TreeSequenceBuilder {
 }
 
 impl TreeSequenceBuilder {
-    fn new() -> Self {
+    pub fn new() -> Self {
         TreeSequenceBuilder {
             ts: TreeSequence::new(),
             last_breakpoint: 0,
@@ -36,7 +36,7 @@ impl TreeSequenceBuilder {
         }
     }
 
-    fn insert(mut self, children: Vec<NodeId>, parent: NodeId) -> Self {
+    pub fn insert(mut self, children: Vec<NodeId>, parent: NodeId) -> Self {
         for c in children {
             self.curr_edges
                 .push((c, parent.clone(), self.last_breakpoint));
@@ -44,12 +44,12 @@ impl TreeSequenceBuilder {
         self
     }
 
-    fn breakpoint(mut self, breakpoint: u64) -> Self {
+    pub fn breakpoint(mut self, breakpoint: u64) -> Self {
         self.last_breakpoint = breakpoint;
         self
     }
 
-    fn transplant(mut self, children: Vec<NodeId>, new_parent: Option<NodeId>) -> Self {
+    pub fn transplant(mut self, children: Vec<NodeId>, new_parent: Option<NodeId>) -> Self {
         for c in children {
             // Flush the existing edge for that child if there is one
             if let Some(index) = self.curr_edges.iter().position(|(child, _, _)| *child == c) {
@@ -66,7 +66,7 @@ impl TreeSequenceBuilder {
         self
     }
 
-    fn end(mut self, seq_length: u64) -> TreeSequence {
+    pub fn end(mut self, seq_length: u64) -> TreeSequence {
         for (child, parent, left) in self.curr_edges {
             self.ts.add_edge(child, parent, left, seq_length);
         }
