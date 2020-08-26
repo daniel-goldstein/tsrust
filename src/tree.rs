@@ -14,6 +14,21 @@ impl Tree {
         self.parent.get(u)?.clone()
     }
 
+    /// Returns the most recent common ancestor of two nodes in the `Tree`.
+    /// `None` is if the nodes do not share a common ancestor
+    /// (because they are under different roots), None is returned.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tsrust::tree::Tree;
+    ///
+    /// let t = Tree::new(vec![None, Some(0), Some(0)]);
+    /// assert_eq!(t.mrca(1, 2), Some(0));
+    ///
+    /// let t = Tree::new(vec![None, None]);
+    /// assert_eq!(t.mrca(0, 1), None);
+    /// ```
     pub fn mrca(&self, u: NodeId, v: NodeId) -> Option<NodeId> {
         let u_anc = self.ancestor_chain(u);
         let v_anc = self.ancestor_chain(v);
