@@ -15,8 +15,8 @@ impl Tree {
     }
 
     /// Returns the most recent common ancestor of two nodes in the `Tree`.
-    /// `None` is if the nodes do not share a common ancestor
-    /// (because they are under different roots), None is returned.
+    /// `None` is returned if the nodes do not share a common ancestor
+    /// (they are under different roots).
     ///
     /// # Examples
     ///
