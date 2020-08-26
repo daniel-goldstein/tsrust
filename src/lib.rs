@@ -80,15 +80,13 @@ impl TreeSequenceBuilder {
 
     fn insert(mut self, children: Vec<usize>, parent: usize) -> Self {
         for c in children {
-            self.curr_edges.push((c, parent.clone(), self.last_breakpoint));
+            self.curr_edges
+                .push((c, parent.clone(), self.last_breakpoint));
         }
         self
     }
 
     fn breakpoint(mut self, breakpoint: u64) -> Self {
-        // for (c, p) in &self.curr_edges {
-        //     self.ts.add_edge(*c, *p, self.curr_left, breakpoint.clone());
-        // }
         self.last_breakpoint = breakpoint;
         self
     }
@@ -101,11 +99,13 @@ impl TreeSequenceBuilder {
                     self.curr_edges.remove(index);
                     // The tracked edge now ends at last_breakpoint and we start
                     // a new ongoing edge from there
-                    self.ts.add_edge(child, old_parent, left, self.last_breakpoint);
+                    self.ts
+                        .add_edge(child, old_parent, left, self.last_breakpoint);
                     if let Some(new_parent) = new_parent {
-                        self.curr_edges.push((child, new_parent, self.last_breakpoint));
+                        self.curr_edges
+                            .push((child, new_parent, self.last_breakpoint));
                     }
-                },
+                }
                 None => panic!("Can't move child node that does not yet exist"),
             }
         }
@@ -228,7 +228,8 @@ mod test {
     #[test]
     fn test_tree_sequence_builder() {
         let ts = TreeSequenceBuilder::new()
-            .insert(vec![0, 1], 4).insert(vec![2, 3], 5)
+            .insert(vec![0, 1], 4)
+            .insert(vec![2, 3], 5)
             .insert(vec![4, 5], 6)
             .breakpoint(1)
             .transplant(vec![0], Some(6))
