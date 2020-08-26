@@ -1,23 +1,48 @@
-use std::vec::Vec;
 use std::cmp;
+use std::cmp::Ordering;
+use std::vec::Vec;
 
 type NodeId = std::option::Option<usize>;
 
+const EPS: f64 = 1e-6;
+
+#[derive(PartialEq, Eq, Debug)]
 pub struct Edge {
-    parent: NodeId,
-    child: NodeId,
-    left: f64,
-    right: f64,
+    parent: usize,
+    child: usize,
+    left: u64,
+    right: u64,
 }
 
+impl Ord for Edge {
+    fn cmp(&self, other: &Self) -> Ordering {
+        (self.left, self.parent, self.child).cmp(&(other.left, other.parent, other.child))
+    }
+}
+
+impl PartialOrd for Edge {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Edge {
+    fn new(parent: usize, child: usize, left: u64, right: u64) -> Edge {
+        Edge { parent, child, left, right }
+    }
+}
+
+// Currently just represents whether the given node is a sample.
+// If false, the Node is not a sample and is instead an inferred ancestor.
+type Node = bool;
+
+#[derive(PartialEq, Eq, Debug)]
 pub struct TreeSequence {
     edges: Vec<Edge>,
 }
 
 pub struct Tree {
     parent: Vec<NodeId>,
-    // left_child: Vec<NodeId>,
-    // right_child: Vec<NodeId>,
 }
 
 impl TreeSequence {
@@ -25,8 +50,28 @@ impl TreeSequence {
         TreeSequence { edges: Vec::new() }
     }
 
-    fn add_edge(&self) {}
+    fn add_edge(&mut self, e: Edge) {
+        match self.edges.binary_search(&e) {
+            Ok(pos) => self.edges.insert(pos, e),
+            Err(pos) => self.edges.insert(pos, e),
+        }
+    }
 }
+
+// TODO: Support list of children -> parent and left/right
+#[macro_export]
+macro_rules! treeseq {
+    ( $( $u:literal -> $v:literal ),* ) => {
+        {
+            let mut ts = TreeSequence::new();
+            $(
+                ts.add_edge(Edge::new($v, $u, 0, 1));
+            )*
+            ts
+        }
+    };
+}
+
 
 impl Tree {
     fn new(parent: Vec<NodeId>) -> Self {
@@ -42,7 +87,7 @@ impl Tree {
         let v_anc = self.ancestor_chain(v);
 
         if u_anc.last().unwrap() != v_anc.last().unwrap() {
-            return None
+            return None;
         }
         let mut common_ancestor = u_anc.last().unwrap().clone();
 
@@ -73,7 +118,7 @@ impl Tree {
 
 #[cfg(test)]
 mod test {
-    use super::Tree;
+    use super::{Tree, TreeSequence, Edge};
 
     #[test]
     fn test_parent() {
@@ -103,5 +148,14 @@ mod test {
         assert_eq!(t2.mrca(3, 0), Some(0));
         assert_eq!(t2.mrca(3, 1), Some(1));
         assert_eq!(t2.mrca(3, 2), Some(2));
+    }
+
+    #[test]
+    fn test_tree_sequence_macro() {
+        let mut ts = TreeSequence::new();
+        ts.add_edge(Edge::new(0, 1, 0, 1));
+        ts.add_edge(Edge::new(0, 2, 0, 1));
+
+        assert_eq!(treeseq!(1 -> 0, 2 -> 0), ts);
     }
 }
