@@ -15,8 +15,7 @@ impl TreeSequence {
     fn add_edge(&mut self, child: NodeId, parent: NodeId, left: u64, right: u64) {
         let e = Edge { child, parent, left, right };
         match self.edges.binary_search(&e) {
-            Ok(pos) => self.edges.insert(pos, e),
-            Err(pos) => self.edges.insert(pos, e),
+            Ok(pos) | Err(pos) => self.edges.insert(pos, e),
         }
     }
 }
