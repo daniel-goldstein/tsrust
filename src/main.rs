@@ -11,4 +11,8 @@ fn main() {
         .breakpoint(2)
         .transplant(vec![0, 5], None)
         .end(3);
+
+    for (tree_index, t) in ts.iter().enumerate() {
+        println!("Tree {}: {:?}", tree_index, t.parent);
+    }
 }

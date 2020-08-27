@@ -1,7 +1,7 @@
 use crate::node::NodeId;
 use std::cmp::Ordering;
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Hash)]
 pub struct Edge {
     pub parent: NodeId,
     pub child: NodeId,

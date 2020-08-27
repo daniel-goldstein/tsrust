@@ -1,8 +1,9 @@
 use crate::node::NodeId;
 use std::cmp;
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Tree {
-    parent: Vec<Option<NodeId>>,
+    pub parent: Vec<Option<NodeId>>,
 }
 
 impl Tree {
@@ -20,7 +21,7 @@ impl Tree {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust
     /// use tsrust::tree::Tree;
     ///
     /// let t = Tree::new(vec![None, Some(0), Some(0)]);
