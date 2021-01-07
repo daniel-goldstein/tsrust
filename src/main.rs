@@ -1,4 +1,5 @@
 use tsrust::treeseqbuilder::TreeSequenceBuilder;
+use streaming_iterator::StreamingIterator;
 
 fn main() {
     let ts = TreeSequenceBuilder::new()
@@ -12,6 +13,7 @@ fn main() {
         .transplant(vec![0, 5], None)
         .end(3);
 
+    // With iterator that generates a new Tree every time
     for (tree_index, t) in ts.iter().enumerate() {
         for node in t.nodes() {
             println!(
@@ -22,4 +24,31 @@ fn main() {
             );
         }
     }
+
+    // With only 1 Tree allocation for the whole iteration
+    let mut ts_iter = ts.streaming_iter();
+    let mut tree_index = 0;
+    while let Some(t) = ts_iter.next() {
+        for node in t.nodes() {
+            println!(
+                "Tree {}: {} has parent {:?}",
+                tree_index,
+                node,
+                t.parent(node)
+            );
+        }
+        tree_index += 1;
+    }
+
+    // Hiding the ugly parts
+    ts.for_each_with_index(|t, tree_index| {
+        for node in t.nodes() {
+            println!(
+                "Tree {}: {} has parent {:?}",
+                tree_index,
+                node,
+                t.parent(node)
+            );
+        }
+    });
 }
