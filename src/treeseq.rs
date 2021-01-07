@@ -20,11 +20,6 @@ impl TreeSequence {
         }
     }
 
-    pub fn num_trees(&self) -> usize {
-        // FIXME bad
-        self.iter().count()
-    }
-
     pub fn iter(&self) -> TreeSequenceIterator {
         let edges: Vec<&Edge> = self.edges.iter().rev().collect();
         TreeSequenceIterator::new(self.num_nodes, edges)
