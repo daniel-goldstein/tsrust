@@ -115,7 +115,7 @@ impl TreeSequenceBuilder {
     pub fn insert(mut self, children: Vec<NodeId>, parent: NodeId) -> Self {
         for c in children {
             self.curr_edges
-                .push((c, parent.clone(), self.last_breakpoint));
+                .push((c, parent, self.last_breakpoint));
         }
         self
     }

@@ -12,7 +12,7 @@ impl Tree {
     }
 
     pub fn parent(&self, u: NodeId) -> Option<NodeId> {
-        self.parent.get(u)?.clone()
+        *self.parent.get(u)?
     }
 
     /// Returns the most recent common ancestor of two nodes in the `Tree`.
@@ -21,7 +21,7 @@ impl Tree {
     ///
     /// # Examples
     ///
-    /// ```rust
+    /// ```
     /// use tsrust::tree::Tree;
     ///
     /// let t = Tree::new(vec![None, Some(0), Some(0)]);
@@ -37,7 +37,7 @@ impl Tree {
         if u_anc.last().unwrap() != v_anc.last().unwrap() {
             return None;
         }
-        let mut common_ancestor = u_anc.last().unwrap().clone();
+        let mut common_ancestor = *u_anc.last().unwrap();
 
         let mut i = 0;
         let u_len = u_anc.len();
