@@ -14,6 +14,10 @@ impl Tree {
     pub fn parent(&self, u: NodeId) -> Option<NodeId> {
         *self.parent.get(u)?
     }
+    
+    pub fn nodes(&self) -> impl Iterator<Item=NodeId> {
+        0..self.parent.len() as NodeId
+    }
 
     /// Returns the most recent common ancestor of two nodes in the `Tree`.
     /// `None` is returned if the nodes do not share a common ancestor

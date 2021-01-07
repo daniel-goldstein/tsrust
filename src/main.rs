@@ -1,4 +1,4 @@
-use tsrust::treeseq::*;
+use tsrust::treeseqbuilder::TreeSequenceBuilder;
 
 fn main() {
     let ts = TreeSequenceBuilder::new()
@@ -13,6 +13,13 @@ fn main() {
         .end(3);
 
     for (tree_index, t) in ts.iter().enumerate() {
-        println!("Tree {}: {:?}", tree_index, t.parent);
+        for node in t.nodes() {
+            println!(
+                "Tree {}: {} has parent {:?}",
+                tree_index,
+                node,
+                t.parent(node)
+            );
+        }
     }
 }
