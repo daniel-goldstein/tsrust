@@ -31,7 +31,9 @@ impl TreeSequence {
     }
 
     pub fn for_each_with_index<F>(&self, f: F)
-    where F: Fn(&Tree, usize) {
+    where
+        F: Fn(&Tree, usize),
+    {
         let mut iter = self.streaming_iter();
         let mut tree_index = 0;
         while let Some(t) = iter.next() {

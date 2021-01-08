@@ -1,5 +1,5 @@
-use crate::treeseq::TreeSequence;
 use crate::node::NodeId;
+use crate::treeseq::TreeSequence;
 
 pub struct TreeSequenceBuilder {
     ts: TreeSequence,

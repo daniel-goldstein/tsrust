@@ -1,5 +1,5 @@
-use tsrust::treeseqbuilder::TreeSequenceBuilder;
 use streaming_iterator::StreamingIterator;
+use tsrust::treeseqbuilder::TreeSequenceBuilder;
 
 fn main() {
     let ts = TreeSequenceBuilder::new()

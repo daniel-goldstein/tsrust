@@ -18,9 +18,9 @@ impl Tree {
     pub fn set_parent(&mut self, child: NodeId, parent: Option<NodeId>) {
         self.parent[child] = parent;
     }
-    
+
     // Not exactly correct but don't have a nodes vec just yet
-    pub fn nodes(&self) -> impl Iterator<Item=NodeId> {
+    pub fn nodes(&self) -> impl Iterator<Item = NodeId> {
         0..self.parent.len() as NodeId
     }
 
